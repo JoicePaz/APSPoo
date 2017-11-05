@@ -1,24 +1,34 @@
 package jsonread;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class Janela extends javax.swing.JFrame {
 
+    
     public Janela() {
         initComponents();
     }
+    public List<Produtos> produtos = new ArrayList<Produtos>();
             
-    public void addRowsToJTable(List<Produtos> produtos)  {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            Object[] rowData = new Object[3];
-            for(Produtos p: produtos){
-                rowData[0] = p.getCotacaoCompra();
-                rowData[1] = p.getCotacaoVenda();
-                rowData[2] = p.getDataHoraCotacao();
-                model.addRow(rowData);
-            }
+    public void addRowsToList(JsonArray produtosArray)  {
+         
+    
+        if (produtosArray != null) 
+        { 
+           for (int i = 0; i < produtosArray.size(); i++)
+           { 
+            Gson gson = new Gson();
+            Produtos pm = gson.fromJson(produtosArray.get(i), Produtos.class);
+          
+            produtos.add(pm);
+           } 
+   
         }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,9 +105,9 @@ public class Janela extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -125,8 +135,16 @@ public class Janela extends javax.swing.JFrame {
         String nome = jTextField1.getText();
         double preco = Double.parseDouble(jTextField2.getText());
         
+        double cotacaoCompra = produtos.get(0).getCotacaoCompra();
+        double cotacaoVenda = produtos.get(0).getCotacaoVenda();
+        
+        double precoVendaReal = preco * cotacaoVenda;
+        double precoCompraReal = preco * cotacaoCompra;
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
         //Adicionar os dados no modelo e, atualiza a jTable1 automaticamente
-        produto.addRow(new Object[]{ nome, preco});
+        produto.addRow(new Object[]{ nome, preco, precoCompraReal, precoVendaReal });
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

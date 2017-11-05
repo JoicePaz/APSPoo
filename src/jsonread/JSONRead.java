@@ -37,24 +37,11 @@ public class JSONRead {
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
         JsonObject rootobj = root.getAsJsonObject(); //May be an object.
         JsonArray produtosArray = rootobj.getAsJsonArray("value"); //May be an array
-        
 
-        List<Produtos> produtos = new ArrayList<Produtos>();
-    
-        if (produtosArray != null) 
-        { 
-           for (int i = 0; i < produtosArray.size(); i++)
-           { 
-            Gson gson = new Gson();
-            Produtos pm = gson.fromJson(produtosArray.get(i), Produtos.class);
-          
-            produtos.add(pm);
-           } 
-   
-        }
+ 
         //Exibe a tela
         Janela p = new Janela();
-        p.addRowsToJTable(produtos);
+        p.addRowsToList(produtosArray);
         p.setVisible(true);
 										
     }
