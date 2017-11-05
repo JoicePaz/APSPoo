@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /**
  * @author Jorge
  */
@@ -24,9 +26,11 @@ public class JSONRead {
      */
     public static void main(String[] args) throws MalformedURLException, IOException {
         
-       // Apenas a URL para obter a cotação do dólar na data 04/11/2017
-        String sURL = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?%40dataInicial=%2701-31-2017%27&%40dataFinalCotacao=%2702-28-2017%27&%24format=json";
-
+       // Apenas a URL para obter a cotação do dólar na data atual
+        Date dataAtual = new Date();    
+        SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");  //HH:mm:ss
+        String sURL = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?%40dataCotacao=%27"+dataFormatada.format(dataAtual)+"%27&%24format=json";
+        
         // Conectar à URL usando a biblioteca nativa do Java.
         URL url = new URL(sURL);
         HttpURLConnection request = (HttpURLConnection) url.openConnection();
