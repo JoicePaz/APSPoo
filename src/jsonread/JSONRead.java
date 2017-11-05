@@ -41,7 +41,7 @@ public class JSONRead {
  
         //Exibe a tela
         Janela p = new Janela();
-        p.addRowsToList(produtosArray);
+        p.CriarListaDeDadosJson(produtosArray);
         p.setVisible(true);
 										
     }
